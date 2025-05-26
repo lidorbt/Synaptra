@@ -1,64 +1,106 @@
 # MCP GraphQL Server
 
-A powerful and feature-rich Model Context Protocol (MCP) server for GraphQL APIs. This server provides advanced GraphQL capabilities including schema introspection, query execution, analysis, caching, and comprehensive security features.
+[![TypeScript](https://img.shields.io/badge/TypeScript-5.0+-blue.svg)](https://www.typescriptlang.org/)
+[![Node.js](https://img.shields.io/badge/Node.js-18+-green.svg)](https://nodejs.org/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+
+An enterprise-grade Model Context Protocol (MCP) server designed for GraphQL API integration. This production-ready solution provides comprehensive GraphQL capabilities including schema introspection, query execution, complexity analysis, and advanced security features with flexible authentication mechanisms.
+
+## Table of Contents
+
+- [Features](#features)
+- [Installation](#installation)
+- [Quick Start](#quick-start)
+- [Configuration](#configuration)
+- [Authentication](#authentication)
+- [Available Tools](#available-tools)
+- [Security](#security)
+- [Performance](#performance)
+- [Library Usage](#library-usage)
+- [Error Handling](#error-handling)
+- [Development](#development)
+- [Contributing](#contributing)
+- [License](#license)
 
 ## Features
 
 ### Core Capabilities
-- **Schema Introspection**: Retrieve and analyze GraphQL schemas with multiple output formats
-- **Query Execution**: Execute GraphQL queries, mutations, and subscriptions with validation
-- **Query Analysis**: Analyze query complexity, depth, and structure
-- **Intelligent Caching**: LRU cache with TTL for improved performance
-- **Security Controls**: Query depth/complexity limits, rate limiting, and introspection controls
-- **Comprehensive Logging**: Structured logging with performance metrics
+
+- **🔍 Schema Introspection**: Comprehensive GraphQL schema analysis with multiple output formats (SDL, JSON, Raw)
+- **⚡ Query Execution**: Execute GraphQL queries, mutations, and subscriptions with built-in validation
+- **📊 Query Analysis**: Advanced complexity and depth analysis with performance insights
+- **🔐 Flexible Authentication**: Default API key with per-request header override capabilities
+- **🛡️ Enterprise Security**: Query depth/complexity limits, rate limiting, and introspection controls
+- **📝 Comprehensive Logging**: Structured logging with performance metrics and query tracking
 
 ### Advanced Features
-- **Dry Run Mode**: Validate queries without execution
-- **Multiple Output Formats**: SDL, JSON, and raw introspection formats
-- **Error Handling**: Detailed error reporting with context
-- **Configuration Flexibility**: Environment variables or JSON config file
-- **TypeScript Support**: Full TypeScript implementation with type safety
+
+- **🧪 Dry Run Mode**: Validate and analyze queries without execution
+- **🔄 Automatic Retries**: Configurable retry logic with exponential backoff
+- **⚙️ Configuration Flexibility**: Support for environment variables and JSON configuration files
+- **🏗️ TypeScript Native**: Full TypeScript implementation with comprehensive type safety
+- **📈 Performance Monitoring**: Built-in metrics collection and performance analysis
+- **🔌 Extensible Architecture**: Plugin-ready design for custom extensions
 
 ## Installation
+
+### NPM
 
 ```bash
 npm install mcp-gql
 ```
 
+### Yarn
+
+```bash
+yarn add mcp-gql
+```
+
+### Global Installation
+
+```bash
+npm install -g mcp-gql
+```
+
 ## Quick Start
 
-### Using Environment Variables
+### Environment Variables (Recommended for Development)
 
 ```bash
 export MCP_GQL_ENDPOINT="https://api.github.com/graphql"
-export MCP_GQL_HEADERS='{"Authorization": "Bearer YOUR_TOKEN"}'
+export MCP_GQL_DEFAULT_API_KEY="your-github-token"
+export MCP_GQL_LOG_LEVEL="info"
+
 npx mcp-gql
 ```
 
-### Using Configuration File
+### Configuration File (Recommended for Production)
 
 Create `mcp-gql.config.json`:
 
 ```json
 {
-  "name": "github-graphql",
+  "name": "production-graphql-server",
   "endpoint": "https://api.github.com/graphql",
+  "defaultApiKey": "ghp_your_production_token",
   "headers": {
-    "Authorization": "Bearer YOUR_TOKEN_HERE"
+    "User-Agent": "MyCompany-GraphQL-Server/1.0.0"
   },
   "allowMutations": false,
-  "cache": {
-    "enabled": true,
-    "ttl": 300000
+  "security": {
+    "maxDepth": 8,
+    "maxComplexity": 500,
+    "allowIntrospection": true
   },
   "logging": {
     "level": "info",
-    "performance": true
+    "performance": true,
+    "queries": false
   }
 }
 ```
 
-Then run:
+Execute the server:
 
 ```bash
 npx mcp-gql
@@ -66,84 +108,137 @@ npx mcp-gql
 
 ## Configuration
 
-### Configuration File Options
+### Configuration Options
 
-| Option | Type | Default | Description |
-|--------|------|---------|-------------|
-| `name` | string | `"mcp-gql"` | Server name |
-| `endpoint` | string | **Required** | GraphQL endpoint URL |
-| `headers` | object | `{}` | HTTP headers for requests |
-| `allowMutations` | boolean | `false` | Allow mutation operations |
-| `allowSubscriptions` | boolean | `false` | Allow subscription operations |
-| `timeout` | number | `30000` | Request timeout in milliseconds |
-| `retries` | number | `3` | Number of retry attempts |
+| Parameter | Type | Default | Description |
+|-----------|------|---------|-------------|
+| `name` | `string` | `"mcp-gql"` | Server identification name |
+| `endpoint` | `string` | **Required** | Target GraphQL endpoint URL |
+| `headers` | `object` | `{}` | Default HTTP headers for all requests |
+| `defaultApiKey` | `string` | `undefined` | Fallback API key when no Authorization header provided |
+| `allowMutations` | `boolean` | `false` | Enable GraphQL mutation operations |
+| `allowSubscriptions` | `boolean` | `false` | Enable GraphQL subscription operations |
+| `timeout` | `number` | `30000` | Request timeout in milliseconds |
+| `retries` | `number` | `3` | Maximum retry attempts for failed requests |
 
-#### Cache Configuration
+### Security Configuration
 
-| Option | Type | Default | Description |
-|--------|------|---------|-------------|
-| `cache.enabled` | boolean | `true` | Enable caching |
-| `cache.ttl` | number | `300000` | Cache TTL in milliseconds |
-| `cache.maxSize` | number | `100` | Maximum cache entries |
+| Parameter | Type | Default | Description |
+|-----------|------|---------|-------------|
+| `security.maxDepth` | `number` | `10` | Maximum allowed query nesting depth |
+| `security.maxComplexity` | `number` | `1000` | Maximum query complexity score |
+| `security.allowIntrospection` | `boolean` | `true` | Enable schema introspection capabilities |
+| `security.rateLimiting.enabled` | `boolean` | `false` | Enable request rate limiting |
+| `security.rateLimiting.windowMs` | `number` | `60000` | Rate limiting time window (ms) |
+| `security.rateLimiting.max` | `number` | `100` | Maximum requests per time window |
 
-#### Security Configuration
+### Logging Configuration
 
-| Option | Type | Default | Description |
-|--------|------|---------|-------------|
-| `security.maxDepth` | number | `10` | Maximum query depth |
-| `security.maxComplexity` | number | `1000` | Maximum query complexity |
-| `security.allowIntrospection` | boolean | `true` | Allow schema introspection |
-| `security.rateLimiting.enabled` | boolean | `false` | Enable rate limiting |
-| `security.rateLimiting.windowMs` | number | `60000` | Rate limit window |
-| `security.rateLimiting.max` | number | `100` | Max requests per window |
-
-#### Logging Configuration
-
-| Option | Type | Default | Description |
-|--------|------|---------|-------------|
-| `logging.level` | string | `"info"` | Log level (error, warn, info, debug) |
-| `logging.queries` | boolean | `false` | Log executed queries |
-| `logging.performance` | boolean | `false` | Log performance metrics |
+| Parameter | Type | Default | Description |
+|-----------|------|---------|-------------|
+| `logging.level` | `string` | `"info"` | Log level: `error`, `warn`, `info`, `debug` |
+| `logging.queries` | `boolean` | `false` | Log executed GraphQL queries |
+| `logging.performance` | `boolean` | `false` | Enable performance metrics logging |
 
 ### Environment Variables
 
-All configuration options can be set via environment variables with the `MCP_GQL_` prefix:
+Configure the server using environment variables with the `MCP_GQL_` prefix:
 
 ```bash
+# Core Configuration
 MCP_GQL_ENDPOINT="https://api.example.com/graphql"
-MCP_GQL_HEADERS='{"Authorization": "Bearer token"}'
-MCP_GQL_ALLOW_MUTATIONS="true"
-MCP_GQL_CACHE_ENABLED="true"
-MCP_GQL_CACHE_TTL="600000"
-MCP_GQL_LOG_LEVEL="debug"
+MCP_GQL_DEFAULT_API_KEY="your-api-token"
+MCP_GQL_HEADERS='{"User-Agent": "MyApp/1.0", "X-Custom": "value"}'
+
+# Security Settings
+MCP_GQL_MAX_DEPTH="10"
+MCP_GQL_MAX_COMPLEXITY="1000"
+MCP_GQL_ALLOW_MUTATIONS="false"
+
+# Logging Configuration
+MCP_GQL_LOG_LEVEL="info"
 MCP_GQL_LOG_PERFORMANCE="true"
+MCP_GQL_LOG_QUERIES="false"
 ```
+
+## Authentication
+
+The server implements a sophisticated authentication hierarchy that balances convenience with security:
+
+### Authentication Priority Order
+
+1. **Per-Request Headers** (Highest Priority)
+   - Authorization headers provided in individual tool requests
+   - Overrides all default authentication
+
+2. **Default API Key** (Fallback)
+   - Configured via `defaultApiKey` parameter
+   - Used when no per-request Authorization header is provided
+
+3. **Default Headers** (Base Configuration)
+   - Static headers from server configuration
+   - Applied to all requests unless overridden
+
+### Implementation Examples
+
+#### Default API Key Configuration
+
+```json
+{
+  "endpoint": "https://api.github.com/graphql",
+  "defaultApiKey": "ghp_your_default_token",
+  "headers": {
+    "User-Agent": "Enterprise-GraphQL-Client/1.0"
+  }
+}
+```
+
+#### Per-Request Authentication Override
+
+```json
+{
+  "query": "query { viewer { login } }",
+  "headers": {
+    "Authorization": "Bearer ghp_user_specific_token",
+    "X-Request-ID": "req-12345"
+  }
+}
+```
+
+### Security Benefits
+
+- **🔐 Token Isolation**: Default tokens aren't exposed in request logs
+- **👥 Multi-Tenant Support**: Different users can authenticate with separate tokens
+- **⚡ Performance**: Reduced authentication overhead for bulk operations
+- **🛡️ Audit Trail**: Clear distinction between default and user-specific authentication
 
 ## Available Tools
 
-### 1. introspect-schema
+### 1. Schema Introspection (`introspect-schema`)
 
-Retrieve and analyze the GraphQL schema from the endpoint.
+Retrieves and analyzes GraphQL schemas with comprehensive metadata extraction.
 
 **Parameters:**
-- `format` (optional): Output format - `"sdl"`, `"json"`, or `"introspection"` (default: `"sdl"`)
-- `includeDescription` (optional): Include descriptions (default: `true`)
-- `includeDeprecated` (optional): Include deprecated fields (default: `false`)
-- `useCache` (optional): Use cached schema (default: `true`)
+- `format` (*optional*): Output format - `"sdl"`, `"json"`, or `"introspection"` (default: `"sdl"`)
+- `includeDescription` (*optional*): Include field descriptions (default: `true`)
+- `includeDeprecated` (*optional*): Include deprecated elements (default: `false`)
+- `headers` (*optional*): Request-specific HTTP headers
 
-**Example:**
+**Request Example:**
 ```json
 {
   "format": "sdl",
   "includeDescription": true,
-  "useCache": true
+  "headers": {
+    "Authorization": "Bearer user-specific-token"
+  }
 }
 ```
 
-**Response:**
+**Response Example:**
 ```json
 {
-  "schema": "type Query { ... }",
+  "schema": "type Query { user(id: ID!): User }",
   "format": "sdl",
   "types": 42,
   "queries": 15,
@@ -154,29 +249,31 @@ Retrieve and analyze the GraphQL schema from the endpoint.
 }
 ```
 
-### 2. query-graphql
+### 2. Query Execution (`query-graphql`)
 
-Execute GraphQL queries, mutations, or subscriptions.
+Executes GraphQL operations with comprehensive validation and security controls.
 
 **Parameters:**
-- `query` (required): GraphQL query string
-- `variables` (optional): Query variables
-- `operationName` (optional): Operation name for multi-operation queries
-- `validate` (optional): Validate query before execution (default: `true`)
-- `dryRun` (optional): Parse and validate without execution (default: `false`)
-- `useCache` (optional): Use cached results (default: `true`)
+- `query` (*required*): GraphQL query string
+- `variables` (*optional*): Query variables object
+- `operationName` (*optional*): Specific operation name for multi-operation documents
+- `validate` (*optional*): Enable schema validation (default: `true`)
+- `dryRun` (*optional*): Validate without execution (default: `false`)
+- `headers` (*optional*): Request-specific HTTP headers
 
-**Example:**
+**Request Example:**
 ```json
 {
   "query": "query GetUser($id: ID!) { user(id: $id) { name email } }",
-  "variables": { "id": "123" },
+  "variables": { "id": "user-123" },
   "validate": true,
-  "dryRun": false
+  "headers": {
+    "Authorization": "Bearer user-token"
+  }
 }
 ```
 
-**Response:**
+**Response Example:**
 ```json
 {
   "data": {
@@ -187,25 +284,27 @@ Execute GraphQL queries, mutations, or subscriptions.
   },
   "extensions": {
     "metrics": {
-      "duration": 150,
-      "cacheHit": false
+      "duration": 145,
+      "complexity": 12,
+      "depth": 2
     }
   }
 }
 ```
 
-### 3. analyze-query
+### 3. Query Analysis (`analyze-query`)
 
-Analyze GraphQL queries for complexity, depth, and structure.
+Performs comprehensive analysis of GraphQL queries for optimization and security assessment.
 
 **Parameters:**
-- `query` (required): GraphQL query to analyze
-- `variables` (optional): Query variables
-- `includeComplexity` (optional): Include complexity analysis (default: `true`)
-- `includeDepth` (optional): Include depth analysis (default: `true`)
-- `includeFields` (optional): Include field extraction (default: `true`)
+- `query` (*required*): GraphQL query to analyze
+- `variables` (*optional*): Query variables for analysis context
+- `includeComplexity` (*optional*): Include complexity metrics (default: `true`)
+- `includeDepth` (*optional*): Include depth analysis (default: `true`)
+- `includeFields` (*optional*): Include field extraction (default: `true`)
+- `headers` (*optional*): Request-specific HTTP headers
 
-**Example:**
+**Request Example:**
 ```json
 {
   "query": "query { users { posts { comments { author } } } }",
@@ -214,7 +313,7 @@ Analyze GraphQL queries for complexity, depth, and structure.
 }
 ```
 
-**Response:**
+**Response Example:**
 ```json
 {
   "operation": "query",
@@ -223,133 +322,247 @@ Analyze GraphQL queries for complexity, depth, and structure.
   "fields": ["users", "posts", "comments", "author"],
   "variables": [],
   "fragments": [],
-  "warnings": ["Deep query nesting: 4 levels. This may impact performance."],
+  "warnings": [
+    "Deep query nesting: 4 levels. Consider query optimization."
+  ],
   "errors": []
 }
 ```
 
+## Security
+
+### Query Protection Mechanisms
+
+- **Depth Limiting**: Prevents deeply nested query attacks
+- **Complexity Analysis**: Blocks computationally expensive operations
+- **Schema Validation**: Ensures query compliance with target schema
+- **Operation Control**: Granular control over mutations and subscriptions
+
+### Access Control Features
+
+- **Flexible Authentication**: Multi-tier authentication with fallback mechanisms
+- **Rate Limiting**: Configurable request throttling
+- **Introspection Control**: Optional schema introspection disabling
+- **Audit Logging**: Comprehensive request and error logging
+
+### Production Security Recommendations
+
+```json
+{
+  "security": {
+    "maxDepth": 8,
+    "maxComplexity": 500,
+    "allowIntrospection": false,
+    "rateLimiting": {
+      "enabled": true,
+      "windowMs": 60000,
+      "max": 100
+    }
+  },
+  "logging": {
+    "level": "warn",
+    "queries": false,
+    "performance": true
+  }
+}
+```
+
+## Performance
+
+### Built-in Performance Features
+
+- **Execution Metrics**: Automatic tracking of query execution times
+- **Complexity Analysis**: Real-time query complexity assessment
+- **Performance Logging**: Detailed metrics for optimization insights
+- **Retry Logic**: Intelligent retry mechanisms with exponential backoff
+
+### Performance Monitoring
+
+The server automatically collects and reports:
+- Query execution duration
+- Schema introspection performance
+- Error rates and retry statistics
+- Complexity and depth metrics
+
+### Optimization Recommendations
+
+- Enable performance logging for production monitoring
+- Set appropriate complexity and depth limits
+- Use dry-run mode for query validation during development
+- Monitor query patterns for optimization opportunities
+
 ## Library Usage
 
-You can also use this as a library in your Node.js applications:
+### TypeScript Integration
 
 ```typescript
 import { createMcpGraphQLServer, McpConfig } from 'mcp-gql';
 
 const config: McpConfig = {
-  name: 'my-graphql-server',
+  name: 'enterprise-graphql-server',
   endpoint: 'https://api.example.com/graphql',
+  defaultApiKey: 'your-enterprise-token',
   headers: {
-    'Authorization': 'Bearer token'
+    'User-Agent': 'Enterprise-App/2.0.0'
   },
-  allowMutations: true,
-  cache: {
-    enabled: true,
-    ttl: 300000,
-    maxSize: 100
-  }
+  security: {
+    maxDepth: 8,
+    maxComplexity: 500,
+    allowIntrospection: false
+  },
+  allowMutations: true
 };
 
 const server = createMcpGraphQLServer(config);
 
-// Start the server
+// Lifecycle management
 await server.start();
 
-// Access services directly
+// Direct client access
 const client = server.getClient();
-const schema = await client.introspectSchema();
-console.log('Schema version:', schema.version);
 
-// Stop the server
+// Default authentication usage
+const schema = await client.introspectSchema();
+
+// Per-request authentication override
+const userSchema = await client.introspectSchema({
+  'Authorization': 'Bearer user-specific-token'
+});
+
+// Graceful shutdown
 await server.stop();
+```
+
+### JavaScript Integration
+
+```javascript
+const { createMcpGraphQLServer } = require('mcp-gql');
+
+const config = {
+  name: 'production-server',
+  endpoint: 'https://api.example.com/graphql',
+  defaultApiKey: process.env.GRAPHQL_API_KEY,
+  allowMutations: false
+};
+
+async function main() {
+  const server = createMcpGraphQLServer(config);
+  await server.start();
+  
+  // Server is now running and ready to handle MCP requests
+  console.log('GraphQL MCP Server is running');
+}
+
+main().catch(console.error);
 ```
 
 ## Error Handling
 
-The server provides comprehensive error handling with detailed context:
+The server provides comprehensive error handling with detailed context and actionable information:
+
+### Error Response Format
 
 ```json
 {
   "error": "Query validation failed",
   "tool": "query-graphql",
-  "args": { "query": "invalid query" },
+  "args": { "query": "invalid query syntax" },
   "details": {
     "errors": [
       {
         "message": "Syntax Error: Expected Name, found }",
-        "locations": [{ "line": 1, "column": 15 }]
+        "locations": [{ "line": 1, "column": 15 }],
+        "path": null
       }
-    ]
+    ],
+    "timestamp": "2024-01-01T00:00:00.000Z"
   }
 }
 ```
 
-## Performance Features
+### Error Categories
 
-### Caching
-- **Schema Caching**: Schemas are cached to avoid repeated introspection
-- **Query Caching**: Query results are cached (excluding mutations/subscriptions)
-- **LRU Eviction**: Automatic cache cleanup with configurable size limits
-- **TTL Support**: Time-based cache expiration
-
-### Performance Monitoring
-- **Execution Metrics**: Track query execution time and cache hit rates
-- **Performance Logging**: Optional detailed performance logging
-- **Query Analysis**: Complexity and depth analysis for optimization
-
-## Security Features
-
-### Query Protection
-- **Depth Limiting**: Prevent deeply nested queries
-- **Complexity Analysis**: Block overly complex queries
-- **Validation**: Schema-based query validation
-- **Operation Control**: Disable mutations/subscriptions as needed
-
-### Access Control
-- **Header-based Auth**: Support for various authentication methods
-- **Rate Limiting**: Configurable request rate limiting
-- **Introspection Control**: Option to disable schema introspection
+- **Validation Errors**: Schema validation failures with specific field information
+- **Network Errors**: Connection and timeout issues with retry information
+- **Authentication Errors**: Authorization failures with security context
+- **Query Errors**: GraphQL execution errors with detailed error paths
 
 ## Development
 
-### Building from Source
+### Local Development Setup
 
 ```bash
+# Clone the repository
 git clone https://github.com/your-org/mcp-gql.git
 cd mcp-gql
+
+# Install dependencies
 npm install
+
+# Build the project
 npm run build
-```
 
-### Running Tests
-
-```bash
-npm test
-```
-
-### Development Mode
-
-```bash
+# Run in development mode
 npm run dev
+```
+
+### Testing
+
+```bash
+# Run the test suite
+npm test
+
+# Run tests with coverage
+npm run test:coverage
+
+# Run integration tests
+npm run test:integration
+```
+
+### Building for Production
+
+```bash
+# Create production build
+npm run build
+
+# Verify build output
+npm run verify
+
+# Package for distribution
+npm pack
 ```
 
 ## Contributing
 
-1. Fork the repository
-2. Create a feature branch
-3. Make your changes
-4. Add tests
-5. Submit a pull request
+We welcome contributions from the community! Please see our [Contributing Guidelines](CONTRIBUTING.md) for details on:
+
+- Code of Conduct
+- Development workflow
+- Testing requirements
+- Pull request process
+- Issue reporting
+
+### Development Guidelines
+
+1. Fork the repository and create a feature branch
+2. Implement changes with comprehensive tests
+3. Follow TypeScript best practices and coding standards
+4. Update documentation for any API changes
+5. Submit a pull request with detailed description
 
 ## License
 
-MIT License - see LICENSE file for details.
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for complete details.
 
-## Changelog
+---
 
-### v1.0.0
-- Initial release with comprehensive GraphQL MCP server
-- Schema introspection with multiple output formats
-- Query execution with caching and validation
-- Query analysis and complexity detection
-- Security features and performance monitoring
-- TypeScript implementation with full type safety 
+## Support
+
+- **Documentation**: [Full API Documentation](docs/api.md)
+- **Issues**: [GitHub Issues](https://github.com/your-org/mcp-gql/issues)
+- **Security**: [Security Policy](SECURITY.md)
+- **Changelog**: [Release Notes](CHANGELOG.md)
+
+---
+
+*Built with ❤️ for the GraphQL and MCP communities* 

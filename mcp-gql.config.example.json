@@ -1,0 +1,27 @@
+{
+  "name": "mcp-gql",
+  "endpoint": "https://api.github.com/graphql",
+  "headers": {
+    "User-Agent": "MCP-GraphQL/1.0.0"
+  },
+  "defaultApiKey": "your-default-token-here",
+  "allowMutations": false,
+  "allowSubscriptions": false,
+  "timeout": 30000,
+  "retries": 3,
+  "security": {
+    "maxDepth": 10,
+    "maxComplexity": 1000,
+    "allowIntrospection": true,
+    "rateLimiting": {
+      "enabled": false,
+      "windowMs": 60000,
+      "max": 100
+    }
+  },
+  "logging": {
+    "level": "info",
+    "queries": false,
+    "performance": true
+  }
+} 
