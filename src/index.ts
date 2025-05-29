@@ -44,49 +44,49 @@ async function main() {
 
 function getConfiguration(): McpConfig {
   // Try to load from config file first
-  const configPath = process.env.MCP_GQL_CONFIG || './mcp-gql.config.json';
+  const configPath = process.env.CONDUIT_CONFIG || './conduit.config.json';
   
   try {
     const configFile = readFileSync(resolve(configPath), 'utf-8');
     const fileConfig = JSON.parse(configFile);
     return McpConfigSchema.parse(fileConfig);
-  } catch (error) {
+  } catch (_error) {
     // If config file doesn't exist or is invalid, use environment variables
     console.warn(`Config file not found or invalid (${configPath}), using environment variables`);
   }
 
   // Build config from environment variables
   const config: Partial<McpConfig> = {
-    name: process.env.MCP_GQL_NAME || 'mcp-gql',
-    endpoint: process.env.MCP_GQL_ENDPOINT || 'http://localhost:4000/graphql',
-    headers: process.env.MCP_GQL_HEADERS ? JSON.parse(process.env.MCP_GQL_HEADERS) : {},
-    defaultApiKey: process.env.MCP_GQL_DEFAULT_API_KEY,
-    allowMutations: process.env.MCP_GQL_ALLOW_MUTATIONS === 'true',
-    allowSubscriptions: process.env.MCP_GQL_ALLOW_SUBSCRIPTIONS === 'true',
-    timeout: process.env.MCP_GQL_TIMEOUT ? parseInt(process.env.MCP_GQL_TIMEOUT) : 30000,
-    retries: process.env.MCP_GQL_RETRIES ? parseInt(process.env.MCP_GQL_RETRIES) : 3,
+    name: process.env.CONDUIT_NAME || 'conduit',
+    endpoint: process.env.CONDUIT_ENDPOINT || 'http://localhost:4000/graphql',
+    headers: process.env.CONDUIT_HEADERS ? JSON.parse(process.env.CONDUIT_HEADERS) : {},
+    defaultApiKey: process.env.CONDUIT_API_KEY,
+    allowMutations: process.env.CONDUIT_ALLOW_MUTATIONS === 'true',
+    allowSubscriptions: process.env.CONDUIT_ALLOW_SUBSCRIPTIONS === 'true',
+    timeout: process.env.CONDUIT_TIMEOUT ? parseInt(process.env.CONDUIT_TIMEOUT) : 30000,
+    retries: process.env.CONDUIT_RETRIES ? parseInt(process.env.CONDUIT_RETRIES) : 3,
   };
 
   // Security configuration
-  if (process.env.MCP_GQL_MAX_DEPTH !== undefined || process.env.MCP_GQL_MAX_COMPLEXITY !== undefined) {
+  if (process.env.CONDUIT_MAX_DEPTH !== undefined || process.env.CONDUIT_MAX_COMPLEXITY !== undefined) {
     config.security = {
-      maxDepth: process.env.MCP_GQL_MAX_DEPTH ? parseInt(process.env.MCP_GQL_MAX_DEPTH) : 10,
-      maxComplexity: process.env.MCP_GQL_MAX_COMPLEXITY ? parseInt(process.env.MCP_GQL_MAX_COMPLEXITY) : 1000,
-      allowIntrospection: process.env.MCP_GQL_ALLOW_INTROSPECTION !== 'false',
+      maxDepth: process.env.CONDUIT_MAX_DEPTH ? parseInt(process.env.CONDUIT_MAX_DEPTH) : 10,
+      maxComplexity: process.env.CONDUIT_MAX_COMPLEXITY ? parseInt(process.env.CONDUIT_MAX_COMPLEXITY) : 1000,
+      allowIntrospection: process.env.CONDUIT_ALLOW_INTROSPECTION !== 'false',
       rateLimiting: {
-        enabled: process.env.MCP_GQL_RATE_LIMIT_ENABLED === 'true',
-        windowMs: process.env.MCP_GQL_RATE_LIMIT_WINDOW ? parseInt(process.env.MCP_GQL_RATE_LIMIT_WINDOW) : 60000,
-        max: process.env.MCP_GQL_RATE_LIMIT_MAX ? parseInt(process.env.MCP_GQL_RATE_LIMIT_MAX) : 100,
+        enabled: process.env.CONDUIT_RATE_LIMIT_ENABLED === 'true',
+        windowMs: process.env.CONDUIT_RATE_LIMIT_WINDOW ? parseInt(process.env.CONDUIT_RATE_LIMIT_WINDOW) : 60000,
+        max: process.env.CONDUIT_RATE_LIMIT_MAX ? parseInt(process.env.CONDUIT_RATE_LIMIT_MAX) : 100,
       },
     };
   }
 
   // Logging configuration
-  if (process.env.MCP_GQL_LOG_LEVEL !== undefined) {
+  if (process.env.CONDUIT_LOG_LEVEL !== undefined) {
     config.logging = {
-      level: (process.env.MCP_GQL_LOG_LEVEL as any) || 'info',
-      queries: process.env.MCP_GQL_LOG_QUERIES === 'true',
-      performance: process.env.MCP_GQL_LOG_PERFORMANCE === 'true',
+      level: (process.env.CONDUIT_LOG_LEVEL as any) || 'info',
+      queries: process.env.CONDUIT_LOG_QUERIES === 'true',
+      performance: process.env.CONDUIT_LOG_PERFORMANCE === 'true',
     };
   }
 

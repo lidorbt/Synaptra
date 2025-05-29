@@ -1,23 +1,28 @@
 {
-  "name": "mcp-gql",
+  "name": "conduit",
   "version": "1.0.0",
   "description": "A high-performance Model Context Protocol server for GraphQL APIs with advanced features, type-safety, and developer experience improvements",
   "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "bin": {
-    "mcp-gql": "dist/index.js"
+    "conduit": "dist/index.js"
   },
   "scripts": {
     "build": "tsc",
     "dev": "tsx src/index.ts",
     "start": "node dist/index.js",
     "watch": "tsx watch src/index.ts",
-    "test": "jest",
+    "test": "jest --passWithNoTests",
     "test:watch": "jest --watch",
+    "test:local": "npm run build && node test-local.js",
+    "test:integration": "npm run build && npm run test:local",
+    "test:all": "npm run type-check && npm run test:integration",
     "lint": "eslint src --ext .ts",
     "lint:fix": "eslint src --ext .ts --fix",
     "format": "prettier --write src/**/*.ts",
     "type-check": "tsc --noEmit",
-    "prepare": "npm run build"
+    "prepare": "npm run build",
+    "prepublishOnly": "npm run test:all"
   },
   "keywords": [
     "mcp",
@@ -32,6 +37,7 @@
   "author": "lidorbt",
   "license": "MIT",
   "devDependencies": {
+    "@eslint/js": "^9.27.0",
     "@types/jest": "^29.5.14",
     "@types/node": "^22.10.6",
     "@typescript-eslint/eslint-plugin": "^8.20.0",
@@ -45,16 +51,16 @@
   },
   "dependencies": {
     "@modelcontextprotocol/sdk": "^1.0.3",
+    "chalk": "^4.1.2",
+    "commander": "^12.1.0",
     "graphql": "^16.9.0",
     "graphql-request": "^7.1.2",
     "graphql-tag": "^2.12.6",
-    "zod": "^3.24.1",
-    "winston": "^3.17.0",
-    "commander": "^12.1.0",
-    "chalk": "^4.1.2",
-    "node-fetch": "^2.7.0",
     "lodash": "^4.17.21",
-    "lru-cache": "^11.0.2"
+    "lru-cache": "^11.0.2",
+    "node-fetch": "^2.7.0",
+    "winston": "^3.17.0",
+    "zod": "^3.24.1"
   },
   "engines": {
     "node": ">=18.0.0"
@@ -62,6 +68,15 @@
   "files": [
     "dist/**/*",
     "README.md",
-    "LICENSE"
-  ]
+    "LICENSE",
+    "conduit.config.example.json"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lidorbt/conduit.git"
+  },
+  "homepage": "https://github.com/lidorbt/conduit#readme",
+  "bugs": {
+    "url": "https://github.com/lidorbt/conduit/issues"
+  }
 }

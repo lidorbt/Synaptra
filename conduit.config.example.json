@@ -1,8 +1,8 @@
 {
-  "name": "mcp-gql",
+  "name": "conduit",
   "endpoint": "https://api.github.com/graphql",
   "headers": {
-    "User-Agent": "MCP-GraphQL/1.0.0"
+    "User-Agent": "Conduit/1.0.0"
   },
   "defaultApiKey": "your-default-token-here",
   "allowMutations": false,

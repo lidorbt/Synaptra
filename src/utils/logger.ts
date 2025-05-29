@@ -29,7 +29,7 @@ class Logger {
             winston.format.simple(),
             winston.format.printf((info: winston.Logform.TransformableInfo) => {
               const ts = new Date(info.timestamp as string).toISOString();
-              const { timestamp, level, message, ...meta } = info;
+              const { timestamp: _timestamp, level, message, ...meta } = info;
               const metaStr = Object.keys(meta).length ? ` ${JSON.stringify(meta)}` : '';
               return `${chalk.gray(ts)} ${level}: ${message}${metaStr}`;
             })
