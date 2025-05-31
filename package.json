@@ -1,6 +1,6 @@
 {
   "name": "synaptra",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "A high-performance Model Context Protocol server for GraphQL APIs with advanced features, type-safety, and developer experience improvements",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
