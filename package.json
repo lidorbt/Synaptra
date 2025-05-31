@@ -1,11 +1,11 @@
 {
-  "name": "conduit",
+  "name": "synaptra",
   "version": "1.0.0",
   "description": "A high-performance Model Context Protocol server for GraphQL APIs with advanced features, type-safety, and developer experience improvements",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "bin": {
-    "conduit": "dist/index.js"
+    "synaptra": "dist/index.js"
   },
   "scripts": {
     "build": "tsc",
@@ -14,15 +14,12 @@
     "watch": "tsx watch src/index.ts",
     "test": "jest --passWithNoTests",
     "test:watch": "jest --watch",
-    "test:local": "npm run build && node test-local.js",
-    "test:integration": "npm run build && npm run test:local",
-    "test:all": "npm run type-check && npm run test:integration",
     "lint": "eslint src --ext .ts",
     "lint:fix": "eslint src --ext .ts --fix",
     "format": "prettier --write src/**/*.ts",
     "type-check": "tsc --noEmit",
     "prepare": "npm run build",
-    "prepublishOnly": "npm run test:all"
+    "prepublishOnly": "npm run type-check"
   },
   "keywords": [
     "mcp",
@@ -73,10 +70,10 @@
   ],
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/lidorbt/conduit.git"
+    "url": "git+https://github.com/lidorbt/synaptra.git"
   },
-  "homepage": "https://github.com/lidorbt/conduit#readme",
+  "homepage": "https://github.com/lidorbt/synaptra#readme",
   "bugs": {
-    "url": "https://github.com/lidorbt/conduit/issues"
+    "url": "https://github.com/lidorbt/synaptra/issues"
   }
 }
