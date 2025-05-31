@@ -44,7 +44,7 @@ async function main() {
 
 function getConfiguration(): McpConfig {
   // Try to load from config file first
-  const configPath = process.env.CONDUIT_CONFIG || './conduit.config.json';
+  const configPath = process.env.SYNAPTRA_CONFIG || './synaptra.config.json';
   
   try {
     const configFile = readFileSync(resolve(configPath), 'utf-8');
@@ -57,36 +57,36 @@ function getConfiguration(): McpConfig {
 
   // Build config from environment variables
   const config: Partial<McpConfig> = {
-    name: process.env.CONDUIT_NAME || 'conduit',
-    endpoint: process.env.CONDUIT_ENDPOINT || 'http://localhost:4000/graphql',
-    headers: process.env.CONDUIT_HEADERS ? JSON.parse(process.env.CONDUIT_HEADERS) : {},
-    defaultApiKey: process.env.CONDUIT_API_KEY,
-    allowMutations: process.env.CONDUIT_ALLOW_MUTATIONS === 'true',
-    allowSubscriptions: process.env.CONDUIT_ALLOW_SUBSCRIPTIONS === 'true',
-    timeout: process.env.CONDUIT_TIMEOUT ? parseInt(process.env.CONDUIT_TIMEOUT) : 30000,
-    retries: process.env.CONDUIT_RETRIES ? parseInt(process.env.CONDUIT_RETRIES) : 3,
+    name: process.env.SYNAPTRA_NAME || 'synaptra',
+    endpoint: process.env.SYNAPTRA_ENDPOINT || 'http://localhost:4000/graphql',
+    headers: process.env.SYNAPTRA_HEADERS ? JSON.parse(process.env.SYNAPTRA_HEADERS) : {},
+    defaultApiKey: process.env.SYNAPTRA_API_KEY,
+    allowMutations: process.env.SYNAPTRA_ALLOW_MUTATIONS === 'true',
+    allowSubscriptions: process.env.SYNAPTRA_ALLOW_SUBSCRIPTIONS === 'true',
+    timeout: process.env.SYNAPTRA_TIMEOUT ? parseInt(process.env.SYNAPTRA_TIMEOUT) : 30000,
+    retries: process.env.SYNAPTRA_RETRIES ? parseInt(process.env.SYNAPTRA_RETRIES) : 3,
   };
 
   // Security configuration
-  if (process.env.CONDUIT_MAX_DEPTH !== undefined || process.env.CONDUIT_MAX_COMPLEXITY !== undefined) {
+  if (process.env.SYNAPTRA_MAX_DEPTH !== undefined || process.env.SYNAPTRA_MAX_COMPLEXITY !== undefined) {
     config.security = {
-      maxDepth: process.env.CONDUIT_MAX_DEPTH ? parseInt(process.env.CONDUIT_MAX_DEPTH) : 10,
-      maxComplexity: process.env.CONDUIT_MAX_COMPLEXITY ? parseInt(process.env.CONDUIT_MAX_COMPLEXITY) : 1000,
-      allowIntrospection: process.env.CONDUIT_ALLOW_INTROSPECTION !== 'false',
+      maxDepth: process.env.SYNAPTRA_MAX_DEPTH ? parseInt(process.env.SYNAPTRA_MAX_DEPTH) : 10,
+      maxComplexity: process.env.SYNAPTRA_MAX_COMPLEXITY ? parseInt(process.env.SYNAPTRA_MAX_COMPLEXITY) : 1000,
+      allowIntrospection: process.env.SYNAPTRA_ALLOW_INTROSPECTION !== 'false',
       rateLimiting: {
-        enabled: process.env.CONDUIT_RATE_LIMIT_ENABLED === 'true',
-        windowMs: process.env.CONDUIT_RATE_LIMIT_WINDOW ? parseInt(process.env.CONDUIT_RATE_LIMIT_WINDOW) : 60000,
-        max: process.env.CONDUIT_RATE_LIMIT_MAX ? parseInt(process.env.CONDUIT_RATE_LIMIT_MAX) : 100,
+        enabled: process.env.SYNAPTRA_RATE_LIMIT_ENABLED === 'true',
+        windowMs: process.env.SYNAPTRA_RATE_LIMIT_WINDOW ? parseInt(process.env.SYNAPTRA_RATE_LIMIT_WINDOW) : 60000,
+        max: process.env.SYNAPTRA_RATE_LIMIT_MAX ? parseInt(process.env.SYNAPTRA_RATE_LIMIT_MAX) : 100,
       },
     };
   }
 
   // Logging configuration
-  if (process.env.CONDUIT_LOG_LEVEL !== undefined) {
+  if (process.env.SYNAPTRA_LOG_LEVEL !== undefined) {
     config.logging = {
-      level: (process.env.CONDUIT_LOG_LEVEL as any) || 'info',
-      queries: process.env.CONDUIT_LOG_QUERIES === 'true',
-      performance: process.env.CONDUIT_LOG_PERFORMANCE === 'true',
+      level: (process.env.SYNAPTRA_LOG_LEVEL as any) || 'info',
+      queries: process.env.SYNAPTRA_LOG_QUERIES === 'true',
+      performance: process.env.SYNAPTRA_LOG_PERFORMANCE === 'true',
     };
   }
 

@@ -1,8 +1,8 @@
 {
-  "name": "conduit",
+  "name": "synaptra",
   "endpoint": "https://api.github.com/graphql",
   "headers": {
-    "User-Agent": "Conduit/1.0.0"
+    "User-Agent": "Synaptra/1.0.0"
   },
   "defaultApiKey": "your-default-token-here",
   "allowMutations": false,

@@ -1,33 +1,34 @@
-# Conduit 🚀
+# Synaptra 🚀
 
-[![npm version](https://badge.fury.io/js/conduit.svg)](https://badge.fury.io/js/conduit)
+[![npm version](https://badge.fury.io/js/synaptra.svg)](https://badge.fury.io/js/synaptra)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![TypeScript](https://img.shields.io/badge/%3C%2F%3E-TypeScript-%230074c1.svg)](http://www.typescriptlang.org/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-Ready-blue.svg)](https://www.typescriptlang.org/)
 
-A high-performance **Model Context Protocol (MCP) server** for GraphQL APIs with advanced features, type-safety, and exceptional developer experience.
+**Synaptra** is a high-performance Model Context Protocol (MCP) server for GraphQL APIs. It provides seamless integration between LLMs and GraphQL endpoints with advanced features like schema introspection, query optimization, caching, and comprehensive security controls.
 
 ## ✨ Features
 
-- 🔌 **Easy MCP Integration** - Seamlessly connect any GraphQL API to MCP-compatible clients
-- 🔐 **Flexible Authentication** - Per-request API keys with secure header management
-- 📊 **Schema Introspection** - Automatic schema discovery and caching
-- 🛡️ **Security First** - Query complexity analysis, depth limiting, and timeout protection
-- ⚡ **High Performance** - Built-in caching, retry logic, and connection pooling
-- 📝 **TypeScript Native** - Full type safety with comprehensive type definitions
-- 🔧 **Developer Friendly** - Rich error handling, logging, and debugging tools
+- 🔍 **Automatic Schema Introspection** - Discovers and exposes GraphQL schema structures
+- 🚀 **High Performance** - Built-in caching and query optimization  
+- 🛡️ **Enterprise Security** - Rate limiting, query complexity analysis, and depth limiting
+- 🔧 **Flexible Configuration** - Environment variables, config files, and runtime options
+- 📊 **Advanced Logging** - Comprehensive query and performance logging
+- 🎯 **Type Safety** - Full TypeScript support with generated types
+- 🔄 **Real-time Support** - GraphQL subscriptions (configurable)
+- 🎛️ **Developer Experience** - Rich error handling and debugging tools
+
+## 📦 Installation
+
+```bash
+npm install synaptra
+```
 
 ## 🚀 Quick Start
 
-### Installation
-
-```bash
-npm install conduit
-```
-
-### Basic Usage
+### As a Library
 
 ```typescript
-import { createMcpGraphQLServer } from 'conduit';
+import { createMcpGraphQLServer } from 'synaptra';
 
 // Create server
 const server = createMcpGraphQLServer({
@@ -59,10 +60,10 @@ const result = await client.executeQuery({
 
 ```bash
 # Start MCP server
-npx conduit --endpoint https://api.example.com/graphql --name my-api
+npx synaptra --endpoint https://api.example.com/graphql --name my-api
 
 # With authentication
-npx conduit --endpoint https://api.example.com/graphql --api-key your-key --name my-api
+npx synaptra --endpoint https://api.example.com/graphql --api-key your-key --name my-api
 ```
 
 ## 📖 Configuration
@@ -99,9 +100,9 @@ interface McpGraphQLConfig {
 ### Environment Variables
 
 ```bash
-CONDUIT_ENDPOINT=https://api.example.com/graphql
-CONDUIT_API_KEY=your-api-key
-CONDUIT_TIMEOUT=30000
+SYNAPTRA_ENDPOINT=https://api.example.com/graphql
+SYNAPTRA_API_KEY=your-api-key
+SYNAPTRA_TIMEOUT=30000
 LOG_LEVEL=info
 ```
 
