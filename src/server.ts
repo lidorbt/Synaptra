@@ -177,7 +177,7 @@ export class McpGraphQLServer {
       });
       throw error;
     }
-  }
+}
 
   async stop() {
     const logger = getLogger();

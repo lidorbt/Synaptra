@@ -1,12 +1,11 @@
 import { z } from 'zod';
 import { GraphQLSchema, DocumentNode, GraphQLError } from 'graphql';
 
-// Configuration schemas
 export const McpConfigSchema = z.object({
   name: z.string().default('mcp-gql'),
   endpoint: z.string().url(),
-  headers: z.record(z.string()).default({}), // Default headers, can be overridden per request
-  defaultApiKey: z.string().optional(), // Default API key used when no Authorization header is provided
+  headers: z.record(z.string()).default({}),
+  defaultApiKey: z.string().optional(),
   allowMutations: z.boolean().default(false),
   allowSubscriptions: z.boolean().default(false),
   schema: z.string().optional(),
@@ -31,7 +30,6 @@ export const McpConfigSchema = z.object({
 
 export type McpConfig = z.infer<typeof McpConfigSchema>;
 
-// GraphQL related types
 export interface GraphQLEndpoint {
   url: string;
   headers: Record<string, string>;

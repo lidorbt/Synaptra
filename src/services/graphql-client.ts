@@ -27,7 +27,7 @@ export class GraphQLClientService {
 
   constructor(
     endpoint: GraphQLEndpoint,
-    private maxRetries: number = 3
+    private maxRetries: number = 1
   ) {
     this.endpoint = endpoint;
     this.client = new GraphQLClient(endpoint.url, {

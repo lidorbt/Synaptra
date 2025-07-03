@@ -180,3 +180,4 @@ local-*
 # package-lock.json
 # yarn.lock
 # pnpm-lock.yaml 
+mcp.json

@@ -1,0 +1,28 @@
+{
+  "name": "synaptra",
+  "endpoint": "http://localhost:3000/api/v1/query",
+  "headers": {
+    "User-Agent": "Synaptra/1.0.0",
+    "Cookie": "CH-prefers-color-scheme=light; CH-time-zone=Asia%2FJerusalem; _BEAMER_USER_ID_KUAqouxi74470=3d52c864-ab75-4b4d-9b36-3181d2827876; _BEAMER_FIRST_VISIT_KUAqouxi74470=2025-04-15T13:29:43.031Z; Tilt-Token=669e0ddb-21f9-4cef-833e-c7bbf32dc573; _BEAMER_LAST_UPDATE_KUAqouxi74470=1747052414524; DSR=eyJhbGciOiJSUzI1NiIsImtpZCI6IlNLMmJ4MkRxZXZlVnNXdFJlMGExQ0FCZGFQNThjIiwidHlwIjoiSldUIn0.eyJhbXIiOlsiZW1haWwiXSwiZHJuIjoiRFNSIiwiZHYiOjEsImVtYWlsIjoibGlkb3JAdmVnYXNlY3VyaXR5LmNvbSIsImV4cCI6MTc0OTkwMzA1OSwiaWF0IjoxNzQ5Mjk4MjU5LCJpc3MiOiJQMmJ4MkRzWk9tS2M1QnZOZlNvVHY3ZVRiSWFMIiwibmFtZSI6IkxpZG9yIEJlbiBUb3ZpbSIsInN1YiI6IlUydTRnd0VsWHJTbm9qNVNrenk3SExaaGo1R1MifQ.RzCM8bE2S_WwrnL4GNM_iPXNV-rN0EZGbZoHQb_HWBCfhQ-GkwWyYlIZ-YLCNzNkd3D1hgbErA-rdsWDZwUOjpWJ-PByMgWkbSz7eFdyGBLOKpWLu3_Yg7Z71tqUloilP49m3sr49FTTkZ50V4Cf3DFecyGczhZqAHOQcUUXte5y2bt1o-xteDy3IyUUweeGAIlGvamSwog0MSKIQjLxYWEv7S_lAAqQVAfgr--1jSR3lv2KX2kgqDNtBQrQJ5qiUcvoILvbFFKaaaUq0y_VU4cF4lZ_EaQeb-_4RNXatyCzMXxWb5Xjnbff_Lr5dvaWVbD9Wpu6N3vao10gAE4Erw; Vega-Effective-Tenant-Id=T2h0aLclXxvtalrybhdmvrpcrosf; _BEAMER_FILTER_BY_URL_KUAqouxi74470=false; DS=eyJhbGciOiJSUzI1NiIsImtpZCI6IlNLMmJ4MkRxZXZlVnNXdFJlMGExQ0FCZGFQNThjIiwidHlwIjoiSldUIn0.eyJhbXIiOlsiZW1haWwiXSwiZHJuIjoiRFMiLCJlbWFpbCI6ImxpZG9yQHZlZ2FzZWN1cml0eS5jb20iLCJleHAiOjE3NDkzNjQwOTYsImlhdCI6MTc0OTM2MzQ5NiwiaXNzIjoiUDJieDJEc1pPbUtjNUJ2TmZTb1R2N2VUYklhTCIsIm5hbWUiOiJMaWRvciBCZW4gVG92aW0iLCJyZXhwIjoiMjAyNS0wNi0xNVQwNjoxODoxNloiLCJzdWIiOiJVMnU0Z3dFbFhyU25vajVTa3p5N0hMWmhqNUdTIn0.MgnCFzLXGzOnEnBMbj6aq_yyijoMDAh24KweH_EfyoFQaRvcgI8VyPfqCBDsDhUJdKkCqiyitv_icK5Xi6HAd2WtOmlvQMPEolkKftGcNZZDMBsv6_IJ-Ah3PGjeCV0Vu9w3CWA6B7HYJ09W8BWtIi6GsN4OEcJIO0oz18DwNSUgTRsZ7fRrVQM54YuVmKHNIiteHHYaDeRpM6AIYLFxGWt_MtocU3RcQ5R6vklVu17T7qPOB15sXvfyzwShZry6SBbQ_KVkOJFQXJ5sbRGDr2-kvlQJKh6pVBIK0iRYcYWiwIDkVuULzJTivFaybxZZdiMlQKZYo1Bx-tVtb1l2UA"
+  },
+  "defaultApiKey": "your-default-token-here",
+  "allowMutations": false,
+  "allowSubscriptions": false,
+  "timeout": 30000,
+  "retries": 3,
+  "security": {
+    "maxDepth": 10,
+    "maxComplexity": 1000,
+    "allowIntrospection": true,
+    "rateLimiting": {
+      "enabled": false,
+      "windowMs": 60000,
+      "max": 100
+    }
+  },
+  "logging": {
+    "level": "info",
+    "queries": false,
+    "performance": true
+  }
+} 
